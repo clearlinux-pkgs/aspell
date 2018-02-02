@@ -6,7 +6,7 @@
 #
 Name     : aspell
 Version  : 0.60.6.1
-Release  : 5
+Release  : 6
 URL      : ftp://ftp.gnu.org/gnu/aspell/aspell-0.60.6.1.tar.gz
 Source0  : ftp://ftp.gnu.org/gnu/aspell/aspell-0.60.6.1.tar.gz
 Source99 : ftp://ftp.gnu.org/gnu/aspell/aspell-0.60.6.1.tar.gz.sig
