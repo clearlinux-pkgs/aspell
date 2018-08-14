@@ -6,7 +6,7 @@
 #
 Name     : aspell
 Version  : 0.60.6.1
-Release  : 8
+Release  : 9
 URL      : https://mirrors.kernel.org/gnu/aspell/aspell-0.60.6.1.tar.gz
 Source0  : https://mirrors.kernel.org/gnu/aspell/aspell-0.60.6.1.tar.gz
 Source99 : https://mirrors.kernel.org/gnu/aspell/aspell-0.60.6.1.tar.gz.sig
@@ -17,6 +17,8 @@ Requires: aspell-bin
 Requires: aspell-lib
 Requires: aspell-doc
 Requires: aspell-locales
+Requires: aspell-en
+Requires: aspell-pt_BR
 Patch1: 0001-gcc7fix.patch
 
 %description
@@ -83,7 +85,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1521000272
+export SOURCE_DATE_EPOCH=1534262977
 %configure --disable-static
 make  %{?_smp_mflags}
 
@@ -95,7 +97,7 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make VERBOSE=1 V=1 %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1521000272
+export SOURCE_DATE_EPOCH=1534262977
 rm -rf %{buildroot}
 %make_install
 %find_lang aspell
