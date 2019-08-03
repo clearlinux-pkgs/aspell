@@ -1,0 +1,7 @@
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iEYEABECAAYFAl0+mWcACgkQttnQzDizJ9fXfgCfT/yhvBpnvwTbBi9/Mc85g1sj
+IBwAn2WsptuWsHifKH0dDqTCdBDUPWxD
+=CK6i
+-----END PGP SIGNATURE-----

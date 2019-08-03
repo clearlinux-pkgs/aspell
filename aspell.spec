@@ -5,21 +5,22 @@
 # Source0 file verified with key 0xB6D9D0CC38B327D7 (kevin@atkinson.dhs.org)
 #
 Name     : aspell
-Version  : 0.60.6.1
-Release  : 10
-URL      : https://mirrors.kernel.org/gnu/aspell/aspell-0.60.6.1.tar.gz
-Source0  : https://mirrors.kernel.org/gnu/aspell/aspell-0.60.6.1.tar.gz
-Source99 : https://mirrors.kernel.org/gnu/aspell/aspell-0.60.6.1.tar.gz.sig
+Version  : 0.60.7
+Release  : 11
+URL      : https://mirrors.kernel.org/gnu/aspell/aspell-0.60.7.tar.gz
+Source0  : https://mirrors.kernel.org/gnu/aspell/aspell-0.60.7.tar.gz
+Source1 : https://mirrors.kernel.org/gnu/aspell/aspell-0.60.7.tar.gz.sig
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : GFDL-1.1 LGPL-2.1
-Requires: aspell-bin
-Requires: aspell-lib
-Requires: aspell-doc
-Requires: aspell-locales
+Requires: aspell-bin = %{version}-%{release}
+Requires: aspell-lib = %{version}-%{release}
+Requires: aspell-license = %{version}-%{release}
+Requires: aspell-locales = %{version}-%{release}
+Requires: aspell-man = %{version}-%{release}
 Requires: aspell-en
 Requires: aspell-pt_BR
-Patch1: 0001-gcc7fix.patch
+BuildRequires : aspell-en
 
 %description
 Appendix A Installing
@@ -30,12 +31,13 @@ POSIX compliant (Unix, Linux, BeOS, Cygwin) systems should work without
 any major problems provided that the compile can handle all of the
 advanced C++ features Aspell uses.  C++ compilers for non-Unix systems
 might work but it will take some work.  Aspell at very least requires a
-Unix-like environment (`sh', `grep', `sed', `tr', ...), and Perl in
+Unix-like environment ('sh', 'grep', 'sed', 'tr', ...), and Perl in
 order to build.  Aspell also uses a few POSIX functions when necessary.
 
 %package bin
 Summary: bin components for the aspell package.
 Group: Binaries
+Requires: aspell-license = %{version}-%{release}
 
 %description bin
 bin components for the aspell package.
@@ -44,9 +46,10 @@ bin components for the aspell package.
 %package dev
 Summary: dev components for the aspell package.
 Group: Development
-Requires: aspell-lib
-Requires: aspell-bin
-Provides: aspell-devel
+Requires: aspell-lib = %{version}-%{release}
+Requires: aspell-bin = %{version}-%{release}
+Provides: aspell-devel = %{version}-%{release}
+Requires: aspell = %{version}-%{release}
 
 %description dev
 dev components for the aspell package.
@@ -55,6 +58,7 @@ dev components for the aspell package.
 %package doc
 Summary: doc components for the aspell package.
 Group: Documentation
+Requires: aspell-man = %{version}-%{release}
 
 %description doc
 doc components for the aspell package.
@@ -63,9 +67,18 @@ doc components for the aspell package.
 %package lib
 Summary: lib components for the aspell package.
 Group: Libraries
+Requires: aspell-license = %{version}-%{release}
 
 %description lib
 lib components for the aspell package.
+
+
+%package license
+Summary: license components for the aspell package.
+Group: Default
+
+%description license
+license components for the aspell package.
 
 
 %package locales
@@ -76,29 +89,48 @@ Group: Default
 locales components for the aspell package.
 
 
+%package man
+Summary: man components for the aspell package.
+Group: Default
+
+%description man
+man components for the aspell package.
+
+
 %prep
-%setup -q -n aspell-0.60.6.1
-%patch1 -p1
+%setup -q -n aspell-0.60.7
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-export LANG=C
-export SOURCE_DATE_EPOCH=1534262977
+export LANG=C.UTF-8
+export SOURCE_DATE_EPOCH=1564857083
+export GCC_IGNORE_WERROR=1
+export AR=gcc-ar
+export RANLIB=gcc-ranlib
+export NM=gcc-nm
+export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
+export FCFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
+export FFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
+export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 "
 %configure --disable-static
 make  %{?_smp_mflags}
 
 %check
-export LANG=C
+export LANG=C.UTF-8
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 make VERBOSE=1 V=1 %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1534262977
+export SOURCE_DATE_EPOCH=1564857083
 rm -rf %{buildroot}
+mkdir -p %{buildroot}/usr/share/package-licenses/aspell
+cp COPYING %{buildroot}/usr/share/package-licenses/aspell/COPYING
+cp manual/aspell-dev.html/Copying.html %{buildroot}/usr/share/package-licenses/aspell/manual_aspell-dev.html_Copying.html
+cp manual/aspell.html/Copying.html %{buildroot}/usr/share/package-licenses/aspell/manual_aspell.html_Copying.html
 %make_install
 %find_lang aspell
 
@@ -200,9 +232,8 @@ rm -rf %{buildroot}
 /usr/lib64/libpspell.so
 
 %files doc
-%defattr(-,root,root,-)
+%defattr(0644,root,root,0755)
 %doc /usr/share/info/*
-%doc /usr/share/man/man1/*
 
 %files lib
 %defattr(-,root,root,-)
@@ -213,9 +244,24 @@ rm -rf %{buildroot}
 /usr/lib64/aspell-0.60/tex-filter.so
 /usr/lib64/aspell-0.60/texinfo-filter.so
 /usr/lib64/libaspell.so.15
-/usr/lib64/libaspell.so.15.1.5
+/usr/lib64/libaspell.so.15.2.0
 /usr/lib64/libpspell.so.15
-/usr/lib64/libpspell.so.15.1.5
+/usr/lib64/libpspell.so.15.2.0
+
+%files license
+%defattr(0644,root,root,0755)
+/usr/share/package-licenses/aspell/COPYING
+/usr/share/package-licenses/aspell/manual_aspell-dev.html_Copying.html
+/usr/share/package-licenses/aspell/manual_aspell.html_Copying.html
+
+%files man
+%defattr(0644,root,root,0755)
+/usr/share/man/man1/aspell-import.1
+/usr/share/man/man1/aspell.1
+/usr/share/man/man1/prezip-bin.1
+/usr/share/man/man1/pspell-config.1
+/usr/share/man/man1/run-with-aspell.1
+/usr/share/man/man1/word-list-compress.1
 
 %files locales -f aspell.lang
 %defattr(-,root,root,-)
