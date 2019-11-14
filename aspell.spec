@@ -6,14 +6,15 @@
 #
 Name     : aspell
 Version  : 0.60.8
-Release  : 12
+Release  : 13
 URL      : https://mirrors.kernel.org/gnu/aspell/aspell-0.60.8.tar.gz
 Source0  : https://mirrors.kernel.org/gnu/aspell/aspell-0.60.8.tar.gz
 Source1 : https://mirrors.kernel.org/gnu/aspell/aspell-0.60.8.tar.gz.sig
-Summary  : A spell checker designed to eventually replace Ispell
+Summary  : No detailed summary available
 Group    : Development/Tools
 License  : LGPL-2.1
 Requires: aspell-bin = %{version}-%{release}
+Requires: aspell-info = %{version}-%{release}
 Requires: aspell-lib = %{version}-%{release}
 Requires: aspell-license = %{version}-%{release}
 Requires: aspell-locales = %{version}-%{release}
@@ -50,19 +51,17 @@ Requires: aspell-lib = %{version}-%{release}
 Requires: aspell-bin = %{version}-%{release}
 Provides: aspell-devel = %{version}-%{release}
 Requires: aspell = %{version}-%{release}
-Requires: aspell = %{version}-%{release}
 
 %description dev
 dev components for the aspell package.
 
 
-%package doc
-Summary: doc components for the aspell package.
-Group: Documentation
-Requires: aspell-man = %{version}-%{release}
+%package info
+Summary: info components for the aspell package.
+Group: Default
 
-%description doc
-doc components for the aspell package.
+%description info
+info components for the aspell package.
 
 
 %package lib
@@ -100,14 +99,14 @@ man components for the aspell package.
 
 %prep
 %setup -q -n aspell-0.60.8
+cd %{_builddir}/aspell-0.60.8
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1570988396
-# -Werror is for werrorists
+export SOURCE_DATE_EPOCH=1573775765
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -127,11 +126,11 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make VERBOSE=1 V=1 %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1570988396
+export SOURCE_DATE_EPOCH=1573775765
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/aspell
-cp COPYING %{buildroot}/usr/share/package-licenses/aspell/COPYING
-cp manual/aspell.html/Copying.html %{buildroot}/usr/share/package-licenses/aspell/manual_aspell.html_Copying.html
+cp %{_builddir}/aspell-0.60.8/COPYING %{buildroot}/usr/share/package-licenses/aspell/e60c2e780886f95df9c9ee36992b8edabec00bcc
+cp %{_builddir}/aspell-0.60.8/manual/aspell.html/Copying.html %{buildroot}/usr/share/package-licenses/aspell/b8327f31d95919d71c818ab0460fd24ec976ac9b
 %make_install
 %find_lang aspell
 
@@ -234,9 +233,10 @@ cp manual/aspell.html/Copying.html %{buildroot}/usr/share/package-licenses/aspel
 /usr/lib64/libaspell.so
 /usr/lib64/libpspell.so
 
-%files doc
+%files info
 %defattr(0644,root,root,0755)
-%doc /usr/share/info/*
+/usr/share/info/aspell-dev.info
+/usr/share/info/aspell.info
 
 %files lib
 %defattr(-,root,root,-)
@@ -254,8 +254,8 @@ cp manual/aspell.html/Copying.html %{buildroot}/usr/share/package-licenses/aspel
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/aspell/COPYING
-/usr/share/package-licenses/aspell/manual_aspell.html_Copying.html
+/usr/share/package-licenses/aspell/b8327f31d95919d71c818ab0460fd24ec976ac9b
+/usr/share/package-licenses/aspell/e60c2e780886f95df9c9ee36992b8edabec00bcc
 
 %files man
 %defattr(0644,root,root,0755)
