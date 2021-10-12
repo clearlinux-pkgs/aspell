@@ -6,14 +6,15 @@
 #
 Name     : aspell
 Version  : 0.60.8
-Release  : 14
+Release  : 15
 URL      : https://mirrors.kernel.org/gnu/aspell/aspell-0.60.8.tar.gz
 Source0  : https://mirrors.kernel.org/gnu/aspell/aspell-0.60.8.tar.gz
 Source1  : https://mirrors.kernel.org/gnu/aspell/aspell-0.60.8.tar.gz.sig
 Summary  : No detailed summary available
 Group    : Development/Tools
-License  : LGPL-2.1
+License  : GFDL-1.1 LGPL-2.1
 Requires: aspell-bin = %{version}-%{release}
+Requires: aspell-filemap = %{version}-%{release}
 Requires: aspell-info = %{version}-%{release}
 Requires: aspell-lib = %{version}-%{release}
 Requires: aspell-license = %{version}-%{release}
@@ -39,6 +40,7 @@ order to build.  Aspell also uses a few POSIX functions when necessary.
 Summary: bin components for the aspell package.
 Group: Binaries
 Requires: aspell-license = %{version}-%{release}
+Requires: aspell-filemap = %{version}-%{release}
 
 %description bin
 bin components for the aspell package.
@@ -56,6 +58,14 @@ Requires: aspell = %{version}-%{release}
 dev components for the aspell package.
 
 
+%package filemap
+Summary: filemap components for the aspell package.
+Group: Default
+
+%description filemap
+filemap components for the aspell package.
+
+
 %package info
 Summary: info components for the aspell package.
 Group: Default
@@ -68,6 +78,7 @@ info components for the aspell package.
 Summary: lib components for the aspell package.
 Group: Libraries
 Requires: aspell-license = %{version}-%{release}
+Requires: aspell-filemap = %{version}-%{release}
 
 %description lib
 lib components for the aspell package.
@@ -100,37 +111,57 @@ man components for the aspell package.
 %prep
 %setup -q -n aspell-0.60.8
 cd %{_builddir}/aspell-0.60.8
+pushd ..
+cp -a aspell-0.60.8 buildavx2
+popd
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1605119877
+export SOURCE_DATE_EPOCH=1634055328
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
-export FCFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 "
-export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 "
-export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 "
+export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=auto "
+export FCFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=auto "
+export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=auto "
+export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=auto "
 %configure --disable-static
 make  %{?_smp_mflags}
 
+unset PKG_CONFIG_PATH
+pushd ../buildavx2/
+export CFLAGS="$CFLAGS -m64 -march=x86-64-v3"
+export CXXFLAGS="$CXXFLAGS -m64 -march=x86-64-v3"
+export FFLAGS="$FFLAGS -m64 -march=x86-64-v3"
+export FCFLAGS="$FCFLAGS -m64 -march=x86-64-v3"
+export LDFLAGS="$LDFLAGS -m64 -march=x86-64-v3"
+%configure --disable-static
+make  %{?_smp_mflags}
+popd
 %check
 export LANG=C.UTF-8
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 make %{?_smp_mflags} check
+cd ../buildavx2;
+make %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1605119877
+export SOURCE_DATE_EPOCH=1634055328
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/aspell
 cp %{_builddir}/aspell-0.60.8/COPYING %{buildroot}/usr/share/package-licenses/aspell/e60c2e780886f95df9c9ee36992b8edabec00bcc
+cp %{_builddir}/aspell-0.60.8/manual/aspell-dev.html/Copying.html %{buildroot}/usr/share/package-licenses/aspell/bfaf730612ae1e838f897dc93179cf6960e9bb43
 cp %{_builddir}/aspell-0.60.8/manual/aspell.html/Copying.html %{buildroot}/usr/share/package-licenses/aspell/b8327f31d95919d71c818ab0460fd24ec976ac9b
+pushd ../buildavx2/
+%make_install_v3
+/usr/bin/elf-move.py avx2 %{buildroot}-v3 %{buildroot}/usr/share/clear/optimized-elf/ %{buildroot}/usr/share/clear/filemap/filemap-%{name}
+popd
 %make_install
 %find_lang aspell
 
@@ -225,6 +256,7 @@ cp %{_builddir}/aspell-0.60.8/manual/aspell.html/Copying.html %{buildroot}/usr/s
 /usr/bin/pspell-config
 /usr/bin/run-with-aspell
 /usr/bin/word-list-compress
+/usr/share/clear/optimized-elf/bin*
 
 %files dev
 %defattr(-,root,root,-)
@@ -232,6 +264,10 @@ cp %{_builddir}/aspell-0.60.8/manual/aspell.html/Copying.html %{buildroot}/usr/s
 /usr/include/pspell/pspell.h
 /usr/lib64/libaspell.so
 /usr/lib64/libpspell.so
+
+%files filemap
+%defattr(-,root,root,-)
+/usr/share/clear/filemap/filemap-aspell
 
 %files info
 %defattr(0644,root,root,0755)
@@ -251,10 +287,12 @@ cp %{_builddir}/aspell-0.60.8/manual/aspell.html/Copying.html %{buildroot}/usr/s
 /usr/lib64/libaspell.so.15.3.1
 /usr/lib64/libpspell.so.15
 /usr/lib64/libpspell.so.15.3.1
+/usr/share/clear/optimized-elf/lib*
 
 %files license
 %defattr(0644,root,root,0755)
 /usr/share/package-licenses/aspell/b8327f31d95919d71c818ab0460fd24ec976ac9b
+/usr/share/package-licenses/aspell/bfaf730612ae1e838f897dc93179cf6960e9bb43
 /usr/share/package-licenses/aspell/e60c2e780886f95df9c9ee36992b8edabec00bcc
 
 %files man
