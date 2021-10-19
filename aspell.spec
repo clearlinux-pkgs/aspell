@@ -6,7 +6,7 @@
 #
 Name     : aspell
 Version  : 0.60.8
-Release  : 15
+Release  : 16
 URL      : https://mirrors.kernel.org/gnu/aspell/aspell-0.60.8.tar.gz
 Source0  : https://mirrors.kernel.org/gnu/aspell/aspell-0.60.8.tar.gz
 Source1  : https://mirrors.kernel.org/gnu/aspell/aspell-0.60.8.tar.gz.sig
@@ -120,7 +120,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1634055328
+export SOURCE_DATE_EPOCH=1634664471
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -134,9 +134,9 @@ make  %{?_smp_mflags}
 
 unset PKG_CONFIG_PATH
 pushd ../buildavx2/
-export CFLAGS="$CFLAGS -m64 -march=x86-64-v3"
-export CXXFLAGS="$CXXFLAGS -m64 -march=x86-64-v3"
-export FFLAGS="$FFLAGS -m64 -march=x86-64-v3"
+export CFLAGS="$CFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3"
+export CXXFLAGS="$CXXFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3"
+export FFLAGS="$FFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3"
 export FCFLAGS="$FCFLAGS -m64 -march=x86-64-v3"
 export LDFLAGS="$LDFLAGS -m64 -march=x86-64-v3"
 %configure --disable-static
@@ -152,7 +152,7 @@ cd ../buildavx2;
 make %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1634055328
+export SOURCE_DATE_EPOCH=1634664471
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/aspell
 cp %{_builddir}/aspell-0.60.8/COPYING %{buildroot}/usr/share/package-licenses/aspell/e60c2e780886f95df9c9ee36992b8edabec00bcc
@@ -160,10 +160,10 @@ cp %{_builddir}/aspell-0.60.8/manual/aspell-dev.html/Copying.html %{buildroot}/u
 cp %{_builddir}/aspell-0.60.8/manual/aspell.html/Copying.html %{buildroot}/usr/share/package-licenses/aspell/b8327f31d95919d71c818ab0460fd24ec976ac9b
 pushd ../buildavx2/
 %make_install_v3
-/usr/bin/elf-move.py avx2 %{buildroot}-v3 %{buildroot}/usr/share/clear/optimized-elf/ %{buildroot}/usr/share/clear/filemap/filemap-%{name}
 popd
 %make_install
 %find_lang aspell
+/usr/bin/elf-move.py avx2 %{buildroot}-v3 %{buildroot}/usr/share/clear/optimized-elf/ %{buildroot}/usr/share/clear/filemap/filemap-%{name}
 
 %files
 %defattr(-,root,root,-)
