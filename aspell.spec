@@ -6,7 +6,7 @@
 #
 Name     : aspell
 Version  : 0.60.8
-Release  : 18
+Release  : 19
 URL      : https://mirrors.kernel.org/gnu/aspell/aspell-0.60.8.tar.gz
 Source0  : https://mirrors.kernel.org/gnu/aspell/aspell-0.60.8.tar.gz
 Source1  : https://mirrors.kernel.org/gnu/aspell/aspell-0.60.8.tar.gz.sig
@@ -22,7 +22,6 @@ Requires: aspell-locales = %{version}-%{release}
 Requires: aspell-man = %{version}-%{release}
 Requires: aspell-en
 Requires: aspell-pt_BR
-BuildRequires : aspell-en
 
 %description
 Appendix A Installing
@@ -120,7 +119,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1634664471
+export SOURCE_DATE_EPOCH=1656005622
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -152,7 +151,7 @@ cd ../buildavx2;
 make %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1634664471
+export SOURCE_DATE_EPOCH=1656005622
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/aspell
 cp %{_builddir}/aspell-0.60.8/COPYING %{buildroot}/usr/share/package-licenses/aspell/e60c2e780886f95df9c9ee36992b8edabec00bcc
@@ -163,7 +162,7 @@ pushd ../buildavx2/
 popd
 %make_install
 %find_lang aspell
-/usr/bin/elf-move.py avx2 %{buildroot}-v3 %{buildroot}/usr/share/clear/optimized-elf/ %{buildroot}/usr/share/clear/filemap/filemap-%{name}
+/usr/bin/elf-move.py avx2 %{buildroot}-v3 %{buildroot} %{buildroot}/usr/share/clear/filemap/filemap-%{name}
 
 %files
 %defattr(-,root,root,-)
@@ -283,11 +282,23 @@ popd
 /usr/lib64/aspell-0.60/sgml-filter.so
 /usr/lib64/aspell-0.60/tex-filter.so
 /usr/lib64/aspell-0.60/texinfo-filter.so
+/usr/lib64/glibc-hwcaps/x86-64-v3/context-filter.so
+/usr/lib64/glibc-hwcaps/x86-64-v3/email-filter.so
+/usr/lib64/glibc-hwcaps/x86-64-v3/libaspell.so
+/usr/lib64/glibc-hwcaps/x86-64-v3/libaspell.so.15
+/usr/lib64/glibc-hwcaps/x86-64-v3/libaspell.so.15.3.1
+/usr/lib64/glibc-hwcaps/x86-64-v3/libpspell.so
+/usr/lib64/glibc-hwcaps/x86-64-v3/libpspell.so.15
+/usr/lib64/glibc-hwcaps/x86-64-v3/libpspell.so.15.3.1
+/usr/lib64/glibc-hwcaps/x86-64-v3/markdown-filter.so
+/usr/lib64/glibc-hwcaps/x86-64-v3/nroff-filter.so
+/usr/lib64/glibc-hwcaps/x86-64-v3/sgml-filter.so
+/usr/lib64/glibc-hwcaps/x86-64-v3/tex-filter.so
+/usr/lib64/glibc-hwcaps/x86-64-v3/texinfo-filter.so
 /usr/lib64/libaspell.so.15
 /usr/lib64/libaspell.so.15.3.1
 /usr/lib64/libpspell.so.15
 /usr/lib64/libpspell.so.15.3.1
-/usr/share/clear/optimized-elf/lib*
 
 %files license
 %defattr(0644,root,root,0755)
