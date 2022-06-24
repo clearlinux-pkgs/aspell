@@ -6,7 +6,7 @@
 #
 Name     : aspell
 Version  : 0.60.8
-Release  : 19
+Release  : 20
 URL      : https://mirrors.kernel.org/gnu/aspell/aspell-0.60.8.tar.gz
 Source0  : https://mirrors.kernel.org/gnu/aspell/aspell-0.60.8.tar.gz
 Source1  : https://mirrors.kernel.org/gnu/aspell/aspell-0.60.8.tar.gz.sig
@@ -119,7 +119,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1656005622
+export SOURCE_DATE_EPOCH=1656089865
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -151,7 +151,7 @@ cd ../buildavx2;
 make %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1656005622
+export SOURCE_DATE_EPOCH=1656089865
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/aspell
 cp %{_builddir}/aspell-0.60.8/COPYING %{buildroot}/usr/share/package-licenses/aspell/e60c2e780886f95df9c9ee36992b8edabec00bcc
@@ -282,19 +282,12 @@ popd
 /usr/lib64/aspell-0.60/sgml-filter.so
 /usr/lib64/aspell-0.60/tex-filter.so
 /usr/lib64/aspell-0.60/texinfo-filter.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/context-filter.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/email-filter.so
 /usr/lib64/glibc-hwcaps/x86-64-v3/libaspell.so
 /usr/lib64/glibc-hwcaps/x86-64-v3/libaspell.so.15
 /usr/lib64/glibc-hwcaps/x86-64-v3/libaspell.so.15.3.1
 /usr/lib64/glibc-hwcaps/x86-64-v3/libpspell.so
 /usr/lib64/glibc-hwcaps/x86-64-v3/libpspell.so.15
 /usr/lib64/glibc-hwcaps/x86-64-v3/libpspell.so.15.3.1
-/usr/lib64/glibc-hwcaps/x86-64-v3/markdown-filter.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/nroff-filter.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/sgml-filter.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/tex-filter.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/texinfo-filter.so
 /usr/lib64/libaspell.so.15
 /usr/lib64/libaspell.so.15.3.1
 /usr/lib64/libpspell.so.15
