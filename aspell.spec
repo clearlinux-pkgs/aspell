@@ -6,7 +6,7 @@
 #
 Name     : aspell
 Version  : 0.60.8
-Release  : 22
+Release  : 23
 URL      : https://mirrors.kernel.org/gnu/aspell/aspell-0.60.8.tar.gz
 Source0  : https://mirrors.kernel.org/gnu/aspell/aspell-0.60.8.tar.gz
 Source1  : https://mirrors.kernel.org/gnu/aspell/aspell-0.60.8.tar.gz.sig
