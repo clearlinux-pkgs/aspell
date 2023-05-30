@@ -7,7 +7,7 @@
 #
 Name     : aspell
 Version  : 0.60.8
-Release  : 28
+Release  : 29
 URL      : https://mirrors.kernel.org/gnu/aspell/aspell-0.60.8.tar.gz
 Source0  : https://mirrors.kernel.org/gnu/aspell/aspell-0.60.8.tar.gz
 Source1  : https://mirrors.kernel.org/gnu/aspell/aspell-0.60.8.tar.gz.sig
@@ -113,15 +113,15 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1682700771
+export SOURCE_DATE_EPOCH=1685479470
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz "
-export FCFLAGS="$FFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz "
-export FFLAGS="$FFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz "
-export CXXFLAGS="$CXXFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz "
+export CFLAGS="$CFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz=zstd "
+export FCFLAGS="$FFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz=zstd "
+export FFLAGS="$FFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz=zstd "
+export CXXFLAGS="$CXXFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz=zstd "
 %configure --disable-static
 make  %{?_smp_mflags}
 
@@ -145,7 +145,7 @@ cd ../buildavx2;
 make %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1682700771
+export SOURCE_DATE_EPOCH=1685479470
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/aspell
 cp %{_builddir}/aspell-%{version}/COPYING %{buildroot}/usr/share/package-licenses/aspell/e60c2e780886f95df9c9ee36992b8edabec00bcc || :
@@ -255,8 +255,6 @@ popd
 
 %files dev
 %defattr(-,root,root,-)
-/V3/usr/lib64/libaspell.so
-/V3/usr/lib64/libpspell.so
 /usr/include/aspell.h
 /usr/include/pspell/pspell.h
 /usr/lib64/libaspell.so
@@ -276,9 +274,7 @@ popd
 /V3/usr/lib64/aspell-0.60/sgml-filter.so
 /V3/usr/lib64/aspell-0.60/tex-filter.so
 /V3/usr/lib64/aspell-0.60/texinfo-filter.so
-/V3/usr/lib64/libaspell.so.15
 /V3/usr/lib64/libaspell.so.15.3.1
-/V3/usr/lib64/libpspell.so.15
 /V3/usr/lib64/libpspell.so.15.3.1
 /usr/lib64/aspell-0.60/context-filter.so
 /usr/lib64/aspell-0.60/email-filter.so
