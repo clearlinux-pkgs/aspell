@@ -8,11 +8,11 @@
 # Source0 file verified with key 0xB6D9D0CC38B327D7 (kevin@atkinson.dhs.org)
 #
 Name     : aspell
-Version  : 0.60.8
-Release  : 30
-URL      : https://mirrors.kernel.org/gnu/aspell/aspell-0.60.8.tar.gz
-Source0  : https://mirrors.kernel.org/gnu/aspell/aspell-0.60.8.tar.gz
-Source1  : https://mirrors.kernel.org/gnu/aspell/aspell-0.60.8.tar.gz.sig
+Version  : 0.60.8.1
+Release  : 31
+URL      : https://mirrors.kernel.org/gnu/aspell/aspell-0.60.8.1.tar.gz
+Source0  : https://mirrors.kernel.org/gnu/aspell/aspell-0.60.8.1.tar.gz
+Source1  : https://mirrors.kernel.org/gnu/aspell/aspell-0.60.8.1.tar.gz.sig
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : GFDL-1.1 LGPL-2.1
@@ -104,10 +104,10 @@ man components for the aspell package.
 
 
 %prep
-%setup -q -n aspell-0.60.8
-cd %{_builddir}/aspell-0.60.8
+%setup -q -n aspell-0.60.8.1
+cd %{_builddir}/aspell-0.60.8.1
 pushd ..
-cp -a aspell-0.60.8 buildavx2
+cp -a aspell-0.60.8.1 buildavx2
 popd
 
 %build
@@ -115,7 +115,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1701934524
+export SOURCE_DATE_EPOCH=1703100525
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -167,12 +167,11 @@ FFLAGS="$CLEAR_INTERMEDIATE_FFLAGS"
 FCFLAGS="$CLEAR_INTERMEDIATE_FCFLAGS"
 ASFLAGS="$CLEAR_INTERMEDIATE_ASFLAGS"
 LDFLAGS="$CLEAR_INTERMEDIATE_LDFLAGS"
-export SOURCE_DATE_EPOCH=1701934524
+export SOURCE_DATE_EPOCH=1703100525
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/aspell
 cp %{_builddir}/aspell-%{version}/COPYING %{buildroot}/usr/share/package-licenses/aspell/e60c2e780886f95df9c9ee36992b8edabec00bcc || :
 cp %{_builddir}/aspell-%{version}/manual/aspell-dev.html/Copying.html %{buildroot}/usr/share/package-licenses/aspell/bfaf730612ae1e838f897dc93179cf6960e9bb43 || :
-cp %{_builddir}/aspell-%{version}/manual/aspell.html/Copying.html %{buildroot}/usr/share/package-licenses/aspell/b8327f31d95919d71c818ab0460fd24ec976ac9b || :
 pushd ../buildavx2/
 %make_install_v3
 popd
@@ -312,7 +311,6 @@ popd
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/aspell/b8327f31d95919d71c818ab0460fd24ec976ac9b
 /usr/share/package-licenses/aspell/bfaf730612ae1e838f897dc93179cf6960e9bb43
 /usr/share/package-licenses/aspell/e60c2e780886f95df9c9ee36992b8edabec00bcc
 
